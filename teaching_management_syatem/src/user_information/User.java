@@ -21,8 +21,6 @@ public class User {
 	private String userRole;        //身份
 	
 	
-	
-	
 	/** 
 	 * @Title:User
 	 * @Description:

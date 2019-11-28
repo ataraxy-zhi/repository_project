@@ -22,6 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
+import function_frame.Grading;
 import function_frame.ModifyPassword;
 import user_information.User;
 
@@ -112,6 +113,13 @@ public class Teacher extends JFrame {
 		JButton btnGrading = new JButton("评定成绩");
 		btnGrading.setBounds(419, 125, 111, 29);
 		contentPane.add(btnGrading);
+		btnGrading.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnGradingClicked(e);
+			}
+		});
 		
 		JButton btnLogout = new JButton("注销");
 		btnLogout.setBounds(553, 29, 81, 29);
@@ -148,6 +156,18 @@ public class Teacher extends JFrame {
 	 */
 	public void btnModifyPasswordClicked(ActionEvent event) {
 		ModifyPassword frame = new ModifyPassword(user);
+		frame.setVisible(true);
+	}
+	
+	/** 
+	 * @Title: btnGradingClicked 
+	 * @Description:  "评分"按钮点击事件处理
+	 * @param event void 
+	 * @author: --
+	 * @date 2019年11月27日下午6:37:30 
+	 */
+	public void btnGradingClicked(ActionEvent event) {
+		Grading frame=new Grading(user.getUserId());
 		frame.setVisible(true);
 	}
 	

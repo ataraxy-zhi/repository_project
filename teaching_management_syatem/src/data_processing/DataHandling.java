@@ -8,6 +8,8 @@
 package data_processing;
 
 import java.sql.*;
+import java.util.ArrayList;
+
 import user_information.User;
 
 /** 
@@ -17,7 +19,7 @@ import user_information.User;
  * @date: 2019年11月20日 下午6:13:24  
  */
 public class DataHandling {
-
+	
 	/** 
 	 * @Title: Init 
 	 * @Description: 初始化数据库连接驱动
@@ -45,7 +47,7 @@ public class DataHandling {
 	 */
 	private static Connection con() throws SQLException, ClassNotFoundException{
 		Init();
-		String url = "jdbc:mysql://localhost:3306/teaching_system11.21_1?characterEncoding=utf8&useSSL=false";//utf-8编码
+		String url = "jdbc:mysql://localhost:3306/teaching_system11.27?characterEncoding=utf8&useSSL=false";//utf-8编码
 		String user = "root";
 		String password = "123456";
 		Connection connection = null;
@@ -110,14 +112,170 @@ public class DataHandling {
 		if(resultSet.next()) {
 			resultSet.close();
 			sql="update user set user_password='"+newPassword+"' where user_id='"+id+"'";
+			statement.executeUpdate(sql);			
+			//return;
+		}	
+		statement.close();
+		connection.close();
+	}
+	
+//	/** 
+//	 * @Title: getCourse 
+//	 * @Description: 根据教师工号得到其所授课程的课程号-课程名
+//	 * @param teacId 教师工号
+//	 * @return String[] 课程号-课程名(拼接成一个字符串)
+//	 * @author: --
+//	 * @throws SQLException 
+//	 * @throws ClassNotFoundException 
+//	 * @date 2019年11月27日下午7:23:04 
+//	 */
+//	public static String[] getCourse(String teacId)  throws ClassNotFoundException, SQLException  {
+//		Connection connection=con();
+//		Statement statement=connection.createStatement();
+//		String sql=
+//				"select cour_id,cour_name from course where cour_id in(select bc_course from begin_course where bc_teacher='"+teacId+"')"; 
+//		
+//		//System.out.println("judge1");		
+//		ResultSet resultSet=statement.executeQuery(sql);		
+//		//System.out.println("judge2");		
+//		ArrayList<String> listCourse=new ArrayList<String>();
+//		
+//		while(resultSet.next()) {
+//			listCourse.add(resultSet.getString(1)+"-"+resultSet.getString(2));
+//		}
+//		
+//		String[] courses=new String[listCourse.size()];
+//		for(int i=0;i<listCourse.size();i++) {
+//			courses[i]=listCourse.get(i);
+//			
+//			System.out.println("课程"+courses[i]);
+//			
+//		}
+//		
+//		resultSet.close();
+//		statement.close();
+//		connection.close();
+//		
+//		return courses;
+//	}
+
+	/** 
+	 * @Title: getCourse 
+	 * @Description: 根据教师工号得到其所授课程的课程号-课程名 
+	 * @param teacId 教师工号
+	 * @return ArrayList<String> 课程号-课程名(拼接成一个字符串)
+	 * @throws ClassNotFoundException
+	 * @throws SQLException ArrayList<String> 
+	 * @author: --
+	 * @date 2019年11月27日下午8:42:46 
+	 */
+	public static ArrayList<String> getCourse(String teacId)  throws ClassNotFoundException, SQLException  {
+		Connection connection=con();
+		Statement statement=connection.createStatement();
+		String sql=
+				"select cour_id,cour_name from course where cour_id in(select bc_course from begin_course where bc_teacher='"+teacId+"')"; 		
+		//System.out.println("judge1");		
+		ResultSet resultSet=statement.executeQuery(sql);		
+		//System.out.println("judge2");		
+		ArrayList<String> listCourse=new ArrayList<String>();
+		
+		while(resultSet.next()) {
+			listCourse.add(resultSet.getString(1)+"-"+resultSet.getString(2));
+		}
+		
+		resultSet.close();
+		statement.close();
+		connection.close();
+		
+		return listCourse;
+	}
+	
+	/** 
+	 * @Title: getStudent 
+	 * @Description: 根据课程号得到选该课程的学生学号
+	 * @param courseId
+	 * @return ArrayList<String> 选课学生
+	 * @author: --
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 * @date 2019年11月27日下午9:02:41 
+	 */
+	public static ArrayList<String> getStudent(String courseId) throws ClassNotFoundException, SQLException{
+		Connection connection=con();
+		Statement statement=connection.createStatement();
+		String sql=
+				"select stu_id,stu_name from student where stu_id in(select sc_student from select_course where sc_course='"+courseId+"')"; 		
+		//System.out.println("judge1");		
+		ResultSet resultSet=statement.executeQuery(sql);		
+		//System.out.println("judge2");		
+		ArrayList<String> listStudent=new ArrayList<String>();
+		
+		while(resultSet.next()) {
+			listStudent.add(resultSet.getString(1)+"-"+resultSet.getString(2));
+		}
+		
+		resultSet.close();
+		statement.close();
+		connection.close();
+		
+		return listStudent;
+	}
+	
+	
+	/** 
+	 * @Title: getGrade 
+	 * @Description: 根据学生学号、课程号查询学生成绩
+	 * @param stuId
+	 * @param courId
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException double 
+	 * @author: --
+	 * @date 2019年11月28日下午3:04:03 
+	 */
+	public static double getGrade(String stuId,String courId) throws ClassNotFoundException, SQLException {
+		Connection connection=con();
+		Statement statement=connection.createStatement();
+		String sql=
+				"select sc_grade from select_course where sc_student='"+stuId+"'and sc_course='"+courId+"'";
+		ResultSet resultSet=statement.executeQuery(sql);
+		
+		double grade = 0;
+		if(resultSet.next()) {
+			grade=resultSet.getDouble(1);
+		}
+		
+		return grade;
+	}
+	
+	
+	/** 
+	 * @Title: updateGrade 
+	 * @Description: 更新学生成绩
+	 * @param stuId
+	 * @param courId
+	 * @param grade
+	 * @throws ClassNotFoundException
+	 * @throws SQLException void 
+	 * @author: --
+	 * @date 2019年11月28日下午3:37:23 
+	 */
+	public static void updateGrade(String stuId,String courId,double grade) throws ClassNotFoundException, SQLException {
+		Connection connection=con();
+		Statement statement=connection.createStatement();
+		String sql=
+				"select * from select_course where sc_student='"+stuId+"'and sc_course='"+courId+"'";
+		ResultSet resultSet=statement.executeQuery(sql);
+		
+		if(resultSet.next()) {
+			resultSet.close();
+			sql=
+					"update select_course set sc_grade='"+grade+"'where sc_student='"+stuId+"'and sc_course='"+courId+"'";
 			statement.executeUpdate(sql);
-			return;
 		}
 		
 		statement.close();
 		connection.close();
 	}
-
-	
 	
 }
