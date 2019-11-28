@@ -113,8 +113,7 @@ public class Teacher extends JFrame {
 		JButton btnGrading = new JButton("评定成绩");
 		btnGrading.setBounds(419, 125, 111, 29);
 		contentPane.add(btnGrading);
-		btnGrading.addActionListener(new ActionListener() {
-			
+		btnGrading.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				btnGradingClicked(e);
@@ -136,7 +135,7 @@ public class Teacher extends JFrame {
 	
 	/** 
 	 * @Title: btnLogoutClicked 
-	 * @Description: "注销"按钮点击事件处理
+	 * @Description: "注销"按钮点击事件处理，关闭窗口
 	 * @param event void 
 	 * @author: --
 	 * @date 2019年11月22日上午9:45:27 
@@ -149,7 +148,7 @@ public class Teacher extends JFrame {
 	
 	/** 
 	 * @Title: btnModifyPasswordClicked 
-	 * @Description: 修改密码按钮事件处理
+	 * @Description: 修改密码按钮事件处理，修改密码
 	 * @param event void 
 	 * @author: --
 	 * @date 2019年11月22日上午11:19:39 
@@ -161,7 +160,7 @@ public class Teacher extends JFrame {
 	
 	/** 
 	 * @Title: btnGradingClicked 
-	 * @Description:  "评分"按钮点击事件处理
+	 * @Description:  "评分"按钮点击事件处理,生成评分界面
 	 * @param event void 
 	 * @author: --
 	 * @date 2019年11月27日下午6:37:30 

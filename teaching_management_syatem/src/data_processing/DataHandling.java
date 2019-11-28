@@ -119,45 +119,6 @@ public class DataHandling {
 		connection.close();
 	}
 	
-//	/** 
-//	 * @Title: getCourse 
-//	 * @Description: 根据教师工号得到其所授课程的课程号-课程名
-//	 * @param teacId 教师工号
-//	 * @return String[] 课程号-课程名(拼接成一个字符串)
-//	 * @author: --
-//	 * @throws SQLException 
-//	 * @throws ClassNotFoundException 
-//	 * @date 2019年11月27日下午7:23:04 
-//	 */
-//	public static String[] getCourse(String teacId)  throws ClassNotFoundException, SQLException  {
-//		Connection connection=con();
-//		Statement statement=connection.createStatement();
-//		String sql=
-//				"select cour_id,cour_name from course where cour_id in(select bc_course from begin_course where bc_teacher='"+teacId+"')"; 
-//		
-//		//System.out.println("judge1");		
-//		ResultSet resultSet=statement.executeQuery(sql);		
-//		//System.out.println("judge2");		
-//		ArrayList<String> listCourse=new ArrayList<String>();
-//		
-//		while(resultSet.next()) {
-//			listCourse.add(resultSet.getString(1)+"-"+resultSet.getString(2));
-//		}
-//		
-//		String[] courses=new String[listCourse.size()];
-//		for(int i=0;i<listCourse.size();i++) {
-//			courses[i]=listCourse.get(i);
-//			
-//			System.out.println("课程"+courses[i]);
-//			
-//		}
-//		
-//		resultSet.close();
-//		statement.close();
-//		connection.close();
-//		
-//		return courses;
-//	}
 
 	/** 
 	 * @Title: getCourse 
@@ -174,9 +135,7 @@ public class DataHandling {
 		Statement statement=connection.createStatement();
 		String sql=
 				"select cour_id,cour_name from course where cour_id in(select bc_course from begin_course where bc_teacher='"+teacId+"')"; 		
-		//System.out.println("judge1");		
-		ResultSet resultSet=statement.executeQuery(sql);		
-		//System.out.println("judge2");		
+		ResultSet resultSet=statement.executeQuery(sql);			
 		ArrayList<String> listCourse=new ArrayList<String>();
 		
 		while(resultSet.next()) {
@@ -204,10 +163,8 @@ public class DataHandling {
 		Connection connection=con();
 		Statement statement=connection.createStatement();
 		String sql=
-				"select stu_id,stu_name from student where stu_id in(select sc_student from select_course where sc_course='"+courseId+"')"; 		
-		//System.out.println("judge1");		
-		ResultSet resultSet=statement.executeQuery(sql);		
-		//System.out.println("judge2");		
+				"select stu_id,stu_name from student where stu_id in(select sc_student from select_course where sc_course='"+courseId+"')"; 				
+		ResultSet resultSet=statement.executeQuery(sql);			
 		ArrayList<String> listStudent=new ArrayList<String>();
 		
 		while(resultSet.next()) {

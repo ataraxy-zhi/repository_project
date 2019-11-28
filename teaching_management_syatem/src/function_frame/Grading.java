@@ -39,18 +39,7 @@ import javax.swing.JButton;
  * @author: --
  * @date: 2019年11月27日 下午6:40:27  
  */
-/** 
- * @ClassName: Grading 
- * @Description: TODO
- * @author: --
- * @date: 2019年11月28日 下午1:58:46  
- */
-/** 
- * @ClassName: Grading 
- * @Description: TODO
- * @author: --
- * @date: 2019年11月28日 下午1:59:04  
- */
+
 public class Grading extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -63,7 +52,7 @@ public class Grading extends JFrame {
 	private JPanel contentPane;
 	private static JComboBox<String> cbbSelectStudent;
 	private static JComboBox<String> cbbSelectCourse;
-	private JLabel labelScore;   //显示学生成绩
+	private JLabel labelScore;   
 	private JTextField tfScore;
 
 	/**
@@ -131,16 +120,14 @@ public class Grading extends JFrame {
 		cbbSelectCourse.addItemListener(new ItemListener() {			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				cbbSelectCourseItemChanged(e);
+				cbbSelectCourseItemChanged(e);   //获取所选择的课程的选课学生
 				
 				try {
 					cbbSelectStudent.removeAllItems();
-					setCbbSelectStudentOptions(courseId);
+					setCbbSelectStudentOptions(courseId);  //初始化选项
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -151,7 +138,6 @@ public class Grading extends JFrame {
 		labelSelectStudent.setBounds(15, 163, 120, 21);
 		contentPane.add(labelSelectStudent);
 				
-		//String lblScore="所选择学生成绩为：";
 		labelScore = new JLabel("所选择学生成绩为：");
 		labelScore.setBounds(15, 283, 219, 21);
 		contentPane.add(labelScore);
@@ -159,31 +145,16 @@ public class Grading extends JFrame {
 		cbbSelectStudent = new JComboBox<String>();
 		cbbSelectStudent.addItem("选择学生");
 		cbbSelectStudent.setSelectedIndex(0);
-//		try {
-//			
-//			//System.out.println("course"+courseId);
-//			
-//			//setCbbSelectStudentOptions(courseId);
-//		} catch (ClassNotFoundException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (SQLException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
 		cbbSelectStudent.setBounds(150, 160, 213, 27);
 		contentPane.add(cbbSelectStudent);
-		cbbSelectStudent.addItemListener(new ItemListener() {
-			
+		cbbSelectStudent.addItemListener(new ItemListener() {			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				cbbSelectStudentItemChanged(e);	
+				cbbSelectStudentItemChanged(e);	    //获取所选择学生成绩
 				labelScore.setText("所选择学生成绩为："+grade);
 			}
 		});	
-		
-		
-		
+				
 		JLabel labelGrading = new JLabel("请输入评定分数：");
 		labelGrading.setBounds(463, 102, 144, 21);
 		contentPane.add(labelGrading);
@@ -196,8 +167,7 @@ public class Grading extends JFrame {
 		JButton btnSave = new JButton("保存");
 		btnSave.setBounds(463, 268, 87, 29);
 		contentPane.add(btnSave);
-		btnSave.addActionListener(new ActionListener() {
-			
+		btnSave.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(cbbSelectCourse.getSelectedIndex()==0||cbbSelectStudent.getSelectedIndex()==0) {
@@ -205,7 +175,7 @@ public class Grading extends JFrame {
 					return;
 				}
 				
-				int flag=btnSaveClicked(e);
+				int flag=btnSaveClicked(e);   //点击保存按钮
 				if (flag == 1) {
 					JOptionPane.showMessageDialog(null, "输入含有字母或特殊字符，请重新输入", "提示", JOptionPane.ERROR_MESSAGE);
 				} else if (flag == 2) {
@@ -216,10 +186,8 @@ public class Grading extends JFrame {
 					try {
 						grade1 = DataHandling.getGrade(stuId,courseId);
 					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					labelScore.setText("所选择学生成绩为："+grade1);
@@ -230,25 +198,15 @@ public class Grading extends JFrame {
 		JButton btnGoback = new JButton("返回");
 		btnGoback.setBounds(553, 389, 87, 29);
 		contentPane.add(btnGoback);
+		btnGoback.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 	}
 	
-//	/** 
-//	 * @Title: setCbbSelectCourseOptions 
-//	 * @Description: 设置（初始化“选择课程”下拉选择框的选项）
-//	 * @throws ClassNotFoundException
-//	 * @throws SQLException void 
-//	 * @author: --
-//	 * @date 2019年11月27日下午8:13:14 
-//	 */
-//	public static void setCbbSelectCourseOptions() throws ClassNotFoundException, SQLException {
-//		
-//		cbbSelectCourse.addItem("选择课程");
-//		String[] courses=DataHandling.getCourse(teacId);
-//		for(int i=0;i<courses.length;i++) {
-//			cbbSelectCourse.addItem(courses[i]);
-//		}
-//		cbbSelectCourse.setSelectedIndex(0);
-//	}
+
 	
     /** 
      * @Title: setCbbSelectCourseOptions 
@@ -301,14 +259,13 @@ public class Grading extends JFrame {
     					e.getItem().toString().substring(0,(e.getItem().toString()).lastIndexOf("-"));
     		}
     	}
-    	
-    	
+  	
     }
     
     
     /** 
      * @Title: cbbSelectStudentItemChanged 
-     * @Description: “选择学生”下拉选择框选择选项事件处理 
+     * @Description: “选择学生”下拉选择框选择选项事件处理 ，获取所选择学生的id
      * @param e void 
      * @author: --
      * @date 2019年11月28日下午3:15:55 
@@ -325,17 +282,15 @@ public class Grading extends JFrame {
     	try {
 			grade=DataHandling.getGrade(stuId,courseId);  //查询学生成绩
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
     }
     
     /** 
      * @Title: btnSaveClicked 
-     * @Description: 保存按钮事件处理
+     * @Description: 保存按钮事件处理,将合法的输入成绩保存在相应的数据库中去
      * @param e
      * @return int 
      * @author: --
@@ -348,11 +303,11 @@ public class Grading extends JFrame {
 		
 		String score=tfScore.getText().toString();
 		
-		for (int i = 0; i < score.length(); i++) { // 循环遍历字符串
-			if (Character.isDigit(score.charAt(i))) { // 用char包装类中的判断数字的方法判断每一个字符
+		for (int i = 0; i < score.length(); i++) { 
+			if (Character.isDigit(score.charAt(i))) { 
 				isDigit = true;
 			}
-			if (Character.isLetter(score.charAt(i))) { // 用char包装类中的判断字母的方法判断每一个字符
+			if (Character.isLetter(score.charAt(i))) {
 				isLetter = true;
 			}
 			if (isSpecialChar(score)) {
@@ -370,12 +325,10 @@ public class Grading extends JFrame {
 			} 
 			else {
 				try {
-					DataHandling.updateGrade(stuId, courseId, grade);
+					DataHandling.updateGrade(stuId, courseId, grade);   //更新成绩
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				return 3; // 3表示正常
@@ -397,7 +350,27 @@ public class Grading extends JFrame {
 		Pattern p = Pattern.compile(regEx);
 		Matcher m = p.matcher(str);
 		return m.find();
-	}
+	}   
+    
+    
+    
+//	/** 
+//	 * @Title: setCbbSelectCourseOptions 
+//	 * @Description: 设置（初始化“选择课程”下拉选择框的选项）
+//	 * @throws ClassNotFoundException
+//	 * @throws SQLException void 
+//	 * @author: --
+//	 * @date 2019年11月27日下午8:13:14 
+//	 */
+//	public static void setCbbSelectCourseOptions() throws ClassNotFoundException, SQLException {
+//		
+//		cbbSelectCourse.addItem("选择课程");
+//		String[] courses=DataHandling.getCourse(teacId);
+//		for(int i=0;i<courses.length;i++) {
+//			cbbSelectCourse.addItem(courses[i]);
+//		}
+//		cbbSelectCourse.setSelectedIndex(0);
+//	}
     
     
 }
